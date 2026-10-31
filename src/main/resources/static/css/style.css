@@ -1,0 +1,889 @@
+/* ===================================================================
+ * STUDENT GRADE MANAGEMENT SYSTEM - STYLESHEET
+ * Modern Academic Theme: Deep Navy Blue, Slate, White, and Ice Grey
+ * =================================================================== */
+
+:root {
+  --primary: #1e40af;
+  --primary-dark: #0f2b48;
+  --primary-light: #3b82f6;
+  --secondary: #475569;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --info: #06b6d4;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --border-color: #e2e8f0;
+  --text-primary: #1e293b;
+  --text-muted: #64748b;
+  --sidebar-width: 260px;
+  --topbar-height: 65px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ===================================================================
+ * LAYOUT: SIDEBAR & MAIN WRAPPER
+ * =================================================================== */
+#app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+#sidebar {
+  width: var(--sidebar-width);
+  background: linear-gradient(180deg, #0a1f33 0%, #0f2b48 100%);
+  color: #f1f5f9;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-header {
+  height: var(--topbar-height);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
+.sidebar-brand-text h5 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #fff;
+}
+
+.sidebar-brand-text small {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.sidebar-nav {
+  padding: 1rem 0.75rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.nav-category {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #64748b;
+  font-weight: 600;
+  padding: 0.75rem 0.75rem 0.35rem;
+}
+
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: #cbd5e1;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-bottom: 0.2rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.sidebar-nav .nav-link i {
+  font-size: 1.1rem;
+  width: 22px;
+  text-align: center;
+  color: #94a3b8;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.sidebar-nav .nav-link:hover i {
+  color: #38bdf8;
+}
+
+.sidebar-nav .nav-link.active {
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.25) 0%, rgba(37, 99, 235, 0.1) 100%);
+  color: #fff;
+  border-left: 3px solid #38bdf8;
+  font-weight: 600;
+}
+
+.sidebar-nav .nav-link.active i {
+  color: #38bdf8;
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.user-details {
+  line-height: 1.2;
+}
+
+.user-details .user-name {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.user-details .user-role {
+  font-size: 0.7rem;
+  color: #38bdf8;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ===================================================================
+ * MAIN CONTENT & TOPBAR
+ * =================================================================== */
+#main-wrapper {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+#topbar {
+  height: var(--topbar-height);
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  box-shadow: var(--shadow-sm);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sidebar-toggle-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--secondary);
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-sm);
+  display: none;
+}
+
+.page-title h4 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.page-title p {
+  margin: 0;
+  font-size: 0.775rem;
+  color: var(--text-muted);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.academic-session-badge {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.775rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.content-container {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+/* ===================================================================
+ * DASHBOARD CARDS & WIDGETS
+ * =================================================================== */
+.stat-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.stat-card.primary::before { background: var(--primary); }
+.stat-card.success::before { background: var(--success); }
+.stat-card.danger::before { background: var(--danger); }
+.stat-card.warning::before { background: var(--warning); }
+.stat-card.info::before { background: var(--info); }
+
+.stat-info p {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.stat-info h3 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stat-info small {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-icon.primary { background: #eff6ff; color: #2563eb; }
+.stat-icon.success { background: #ecfdf5; color: #10b981; }
+.stat-icon.danger { background: #fef2f2; color: #ef4444; }
+.stat-icon.warning { background: #fffbeb; color: #f59e0b; }
+.stat-icon.info { background: #ecfeff; color: #06b6d4; }
+
+/* Dashboard Cards Container */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header h5 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+/* ===================================================================
+ * DATA TABLES & CONTROLS
+ * =================================================================== */
+.table-responsive {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.table-custom {
+  width: 100%;
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-custom th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.table-custom td {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+.table-custom tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.table-custom tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Grade Badges */
+.badge-grade {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.775rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-align: center;
+  min-width: 32px;
+}
+
+.badge-grade-aplus { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+.badge-grade-a { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+.badge-grade-b { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.badge-grade-c { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+.badge-grade-d { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
+.badge-grade-e { background: #fae8ff; color: #86198f; border: 1px solid #f5d0fe; }
+.badge-grade-f { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+
+/* Status Badges */
+.badge-status {
+  padding: 0.3rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-pass { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.badge-fail { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+/* Action Buttons */
+.btn-action {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--secondary);
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+  margin-right: 0.25rem;
+}
+
+.btn-action:hover {
+  background: #f1f5f9;
+  color: var(--primary);
+  border-color: #cbd5e1;
+}
+
+.btn-action.btn-action-delete:hover {
+  background: #fee2e2;
+  color: var(--danger);
+  border-color: #fca5a5;
+}
+
+/* Search Bar & Table Filters */
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.search-box {
+  position: relative;
+  min-width: 280px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.search-box input {
+  padding-left: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: 0.875rem;
+}
+
+.search-box input:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* ===================================================================
+ * MARKS ENTRY & LIVE CALCULATOR
+ * =================================================================== */
+.marks-calculator-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.calc-display {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.calc-metric {
+  background: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+
+.calc-metric small {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.calc-metric span {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ===================================================================
+ * OFFICIAL COLLEGE MARK SHEET (TRANSCRIPT)
+ * =================================================================== */
+.mark-sheet-container {
+  background: #ffffff;
+  border: 2px solid #1e3a8a;
+  border-radius: 8px;
+  padding: 2.5rem 3rem;
+  box-shadow: var(--shadow-lg);
+  max-width: 880px;
+  margin: 1.5rem auto;
+  position: relative;
+  background-image: radial-gradient(rgba(30, 64, 175, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.mark-sheet-header {
+  text-align: center;
+  border-bottom: 2px double #1e3a8a;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
+  position: relative;
+}
+
+.mark-sheet-emblem {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  background: #1e3a8a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
+}
+
+.mark-sheet-college-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f2b48;
+  letter-spacing: 0.8px;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.mark-sheet-accreditation {
+  font-size: 0.775rem;
+  color: #475569;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.75rem;
+}
+
+.mark-sheet-title-badge {
+  display: inline-block;
+  background: #1e3a8a;
+  color: #ffffff;
+  padding: 0.35rem 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 20px;
+}
+
+.mark-sheet-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem 2rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.875rem;
+}
+
+.mark-sheet-detail-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mark-sheet-detail-label {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.mark-sheet-detail-value {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.mark-sheet-table {
+  width: 100%;
+  border: 1px solid #1e3a8a;
+  margin-bottom: 1.5rem;
+  border-collapse: collapse;
+}
+
+.mark-sheet-table th {
+  background: #0f2b48;
+  color: #ffffff;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid #1e3a8a;
+  text-align: center;
+}
+
+.mark-sheet-table td {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.825rem;
+  border: 1px solid #cbd5e1;
+  text-align: center;
+}
+
+.mark-sheet-table td.text-start {
+  text-align: left !important;
+}
+
+.mark-sheet-summary-box {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 2.5rem;
+}
+
+.mark-sheet-summary-item {
+  text-align: center;
+}
+
+.mark-sheet-summary-item small {
+  display: block;
+  font-size: 0.725rem;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.mark-sheet-summary-item strong {
+  font-size: 1.25rem;
+  color: #0f2b48;
+}
+
+.mark-sheet-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 2rem;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.mark-sheet-signature-box {
+  text-align: center;
+  width: 180px;
+}
+
+.mark-sheet-signature-line {
+  border-top: 1px solid #334155;
+  margin-bottom: 0.35rem;
+}
+
+.mark-sheet-signature-box small {
+  font-size: 0.75rem;
+  color: #475569;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.mark-sheet-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 6rem;
+  font-weight: 900;
+  color: rgba(30, 58, 138, 0.04);
+  pointer-events: none;
+  user-select: none;
+  text-transform: uppercase;
+  letter-spacing: 12px;
+  z-index: 0;
+}
+
+/* ===================================================================
+ * TOAST NOTIFICATIONS & MODALS
+ * =================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+}
+
+.modal-content {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  background: #f8fafc;
+  border-bottom: 1px solid var(--border-color);
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+/* ===================================================================
+ * RESPONSIVE ADJUSTMENTS
+ * =================================================================== */
+@media (max-width: 992px) {
+  #sidebar {
+    left: calc(-1 * var(--sidebar-width));
+  }
+  #sidebar.show {
+    left: 0;
+  }
+  #main-wrapper {
+    margin-left: 0;
+  }
+  .sidebar-toggle-btn {
+    display: inline-block;
+  }
+  .mark-sheet-container {
+    padding: 1.5rem;
+  }
+}
+
+/* ===================================================================
+ * PRINT MEDIA STYLES (@media print)
+ * Optimized for Official College Mark Sheet Printing
+ * =================================================================== */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #sidebar,
+  #topbar,
+  .btn,
+  .table-toolbar,
+  .no-print,
+  .toast-container,
+  .modal-backdrop,
+  .modal {
+    display: none !important;
+  }
+
+  #main-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .content-container {
+    padding: 0 !important;
+  }
+
+  .mark-sheet-container {
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 2cm !important;
+    page-break-after: always;
+    background-image: none !important;
+  }
+
+  .mark-sheet-header {
+    border-bottom: 2px solid #000000 !important;
+  }
+
+  .mark-sheet-college-name {
+    color: #000000 !important;
+  }
+
+  .mark-sheet-title-badge {
+    background: #000000 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .mark-sheet-table th {
+    background: #333333 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid #000000 !important;
+  }
+
+  .mark-sheet-table td {
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+  }
+
+  .badge-pass {
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+
+  .badge-fail {
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+}

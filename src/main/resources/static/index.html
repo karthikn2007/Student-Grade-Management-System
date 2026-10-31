@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Grade Management System | College Academic Portal</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  
+  <!-- Custom Theme Stylesheet -->
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app-layout">
+
+  <!-- ================================================================= -->
+  <!-- SIDEBAR NAVIGATION                                                -->
+  <!-- ================================================================= -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand-icon">
+        <i class="bi bi-mortarboard-fill"></i>
+      </div>
+      <div class="sidebar-brand-text">
+        <h5>GRADE SYSTEM</h5>
+        <small>Academic ERP Portal</small>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="nav-category">Core</div>
+      <a class="nav-link active" data-view="dashboard">
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="nav-category">Academic Administration</div>
+      <a class="nav-link" data-view="students">
+        <i class="bi bi-people"></i>
+        <span>Students</span>
+      </a>
+      <a class="nav-link" data-view="teachers">
+        <i class="bi bi-person-badge"></i>
+        <span>Faculty & Teachers</span>
+      </a>
+      <a class="nav-link" data-view="subjects">
+        <i class="bi bi-journal-bookmark"></i>
+        <span>Subjects & Courses</span>
+      </a>
+      <a class="nav-link" data-view="examinations">
+        <i class="bi bi-calendar-check"></i>
+        <span>Examinations</span>
+      </a>
+
+      <div class="nav-category">Assessment & Results</div>
+      <a class="nav-link" data-view="marks">
+        <i class="bi bi-input-cursor-text"></i>
+        <span>Marks & Grading</span>
+      </a>
+      <a class="nav-link" data-view="results">
+        <i class="bi bi-file-earmark-text"></i>
+        <span>Result & Mark Sheet</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-profile-badge">
+        <div class="user-avatar" id="sidebarUserAvatar">AD</div>
+        <div class="user-details overflow-hidden">
+          <div class="user-name text-truncate" id="sidebarUserName">System Admin</div>
+          <div class="user-role" id="sidebarUserRole">ADMIN</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================================================================= -->
+  <!-- MAIN CONTENT AREA                                                 -->
+  <!-- ================================================================= -->
+  <div id="main-wrapper">
+
+    <!-- Top Navigation Bar -->
+    <header id="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggle" title="Toggle Navigation">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="page-title">
+          <h4 id="topbarPageTitle">Academic Performance Dashboard</h4>
+          <p id="topbarPageSubtitle">Institutional metrics, grade distribution, and pass/fail analytics</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="academic-session-badge">
+          <i class="bi bi-mortarboard"></i>
+          <span>Academic Session: 2024&ndash;2025</span>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-outline-primary btn-sm dropdown-toggle fw-semibold" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle me-1"></i>
+            <span id="topbarUserBadge">ADMIN: System Admin</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+            <li><span class="dropdown-item-text text-muted small">Signed in</span></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <button class="dropdown-item text-danger d-flex align-items-center gap-2" id="logoutBtn">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Container -->
+    <main class="content-container">
+
+      <!-- ============================================================= -->
+      <!-- VIEW 1: DASHBOARD                                             -->
+      <!-- ============================================================= -->
+      <section id="view-dashboard" class="view-section">
+        
+        <!-- Filter Bar -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+          <div>
+            <h5 class="fw-bold mb-1">Institutional Overview</h5>
+            <p class="text-muted small mb-0">Dynamic real-time summary retrieved directly from MySQL database</p>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <label class="form-label mb-0 small fw-bold text-muted text-nowrap">Filter by Exam:</label>
+            <select class="form-select form-select-sm" id="dashboardExamFilter" style="min-width: 260px;">
+              <option value="">Latest / All Examinations</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 7 Metric Cards -->
+        <div class="row g-3 mb-4">
+          <!-- Total Students -->
+          <div class="col-xl-3 col-md-6">
+            <div class="stat-card primary">
+              <div class="stat-info">
+                <p>Total Students</p>
+                <h3 id="statTotalStudents">0</h3>
+                <small>Enrolled Candidates</small>
+              </div>
+              <div class="stat-icon primary">
+                <i class="bi bi-people-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Teachers -->
+          <div class="col-xl-3 col-md-6">
+            <div class="stat-card info">
+              <div class="stat-info">
+                <p>Total Faculty</p>
+                <h3 id="statTotalTeachers">0</h3>
+                <small>Teaching Staff</small>
+              </div>
+              <div class="stat-icon info">
+                <i class="bi bi-person-video3"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Subjects -->
+          <div class="col-xl-3 col-md-6">
+            <div class="stat-card warning">
+              <div class="stat-info">
+                <p>Total Subjects</p>
+                <h3 id="statTotalSubjects">0</h3>
+                <small>Curriculum Courses</small>
+              </div>
+              <div class="stat-icon warning">
+                <i class="bi bi-journal-text"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Examinations -->
+          <div class="col-xl-3 col-md-6">
+            <div class="stat-card primary">
+              <div class="stat-info">
+                <p>Examinations</p>
+                <h3 id="statTotalExams">0</h3>
+                <small>Exam Sessions</small>
+              </div>
+              <div class="stat-icon primary">
+                <i class="bi bi-calendar2-check-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Class Average Percentage -->
+          <div class="col-xl-4 col-md-4">
+            <div class="stat-card info">
+              <div class="stat-info">
+                <p>Average Performance</p>
+                <h3 id="statClassAverage">0.0%</h3>
+                <small>Class Average Score</small>
+              </div>
+              <div class="stat-icon info">
+                <i class="bi bi-graph-up-arrow"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passed Students -->
+          <div class="col-xl-4 col-md-4">
+            <div class="stat-card success">
+              <div class="stat-info">
+                <p>Passed Candidates</p>
+                <h3 id="statPassedStudents" class="text-success">0</h3>
+                <small>Pass in All Subjects</small>
+              </div>
+              <div class="stat-icon success">
+                <i class="bi bi-check-circle-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Failed Students -->
+          <div class="col-xl-4 col-md-4">
+            <div class="stat-card danger">
+              <div class="stat-info">
+                <p>Failed / Arrears</p>
+                <h3 id="statFailedStudents" class="text-danger">0</h3>
+                <small>Arrears in &ge;1 Subject</small>
+              </div>
+              <div class="stat-icon danger">
+                <i class="bi bi-x-circle-fill"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row g-3">
+          <div class="col-lg-8">
+            <div class="card h-100">
+              <div class="card-header">
+                <h5><i class="bi bi-bar-chart-line me-2 text-primary"></i>Grade Distribution (A+ through F)</h5>
+                <span class="badge bg-light text-muted border">Automatic Evaluation</span>
+              </div>
+              <div class="card-body">
+                <div style="height: 280px; position: relative;">
+                  <canvas id="gradeDistChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="card h-100">
+              <div class="card-header">
+                <h5><i class="bi bi-pie-chart me-2 text-primary"></i>Pass vs Fail Ratio</h5>
+                <span class="badge bg-light text-muted border">Exam Outcome</span>
+              </div>
+              <div class="card-body">
+                <div style="height: 280px; position: relative;">
+                  <canvas id="passFailChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h5><i class="bi bi-diagram-3 me-2 text-primary"></i>Department-wise Average Performance (%)</h5>
+              </div>
+              <div class="card-body">
+                <div style="height: 220px; position: relative;">
+                  <canvas id="deptPerfChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- VIEW 2: STUDENTS MANAGEMENT                                   -->
+      <!-- ============================================================= -->
+      <section id="view-students" class="view-section d-none">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h5><i class="bi bi-people me-2 text-primary"></i>Student Directory & Records</h5>
+              <small class="text-muted">Manage enrolled students, academic years, and contact details</small>
+            </div>
+            <button class="btn btn-primary btn-sm admin-only" id="addStudentBtn">
+              <i class="bi bi-person-plus me-1"></i> Add New Student
+            </button>
+          </div>
+          <div class="card-body">
+            <!-- Toolbar -->
+            <div class="table-toolbar">
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" class="form-control" id="studentSearchInput" placeholder="Search by name, roll no, or email...">
+              </div>
+              <div class="d-flex gap-2">
+                <select class="form-select form-select-sm" id="studentDeptFilter" style="width: auto;">
+                  <option value="">All Departments</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="table table-custom">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Roll Number</th>
+                    <th>Full Name & Email</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+                    <th>Phone Number</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- VIEW 3: TEACHERS MANAGEMENT                                   -->
+      <!-- ============================================================= -->
+      <section id="view-teachers" class="view-section d-none">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h5><i class="bi bi-person-badge me-2 text-primary"></i>Faculty & Teaching Staff</h5>
+              <small class="text-muted">Academic faculty members, designations, and departments</small>
+            </div>
+            <button class="btn btn-primary btn-sm admin-only" id="addTeacherBtn">
+              <i class="bi bi-plus-circle me-1"></i> Add Faculty Member
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-toolbar">
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" class="form-control" id="teacherSearchInput" placeholder="Search faculty by name, employee ID, or department...">
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-custom">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Employee ID</th>
+                    <th>Faculty Name & Designation</th>
+                    <th>Department</th>
+                    <th>Email Address</th>
+                    <th>Phone</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="teachersTableBody">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- VIEW 4: SUBJECTS MANAGEMENT                                   -->
+      <!-- ============================================================= -->
+      <section id="view-subjects" class="view-section d-none">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h5><i class="bi bi-journal-bookmark me-2 text-primary"></i>Curriculum & Subjects Catalog</h5>
+              <small class="text-muted">Courses, maximum marks, passing requirements, and semesters</small>
+            </div>
+            <button class="btn btn-primary btn-sm admin-only" id="addSubjectBtn">
+              <i class="bi bi-plus-circle me-1"></i> Add Subject
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-toolbar">
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" class="form-control" id="subjectSearchInput" placeholder="Search subject code or name...">
+              </div>
+              <div class="d-flex gap-2">
+                <select class="form-select form-select-sm" id="subjectDeptFilter">
+                  <option value="">All Departments</option>
+                </select>
+                <select class="form-select form-select-sm" id="subjectSemFilter">
+                  <option value="">All Semesters</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-custom">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Subject Code</th>
+                    <th>Subject Title</th>
+                    <th>Department</th>
+                    <th>Semester</th>
+                    <th>Max / Pass Marks</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="subjectsTableBody">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- VIEW 5: EXAMINATIONS MANAGEMENT                               -->
+      <!-- ============================================================= -->
+      <section id="view-examinations" class="view-section d-none">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h5><i class="bi bi-calendar-check me-2 text-primary"></i>Examination Sessions</h5>
+              <small class="text-muted">Academic examination terms, schedules, and sessions</small>
+            </div>
+            <button class="btn btn-primary btn-sm admin-only" id="addExamBtn">
+              <i class="bi bi-plus-circle me-1"></i> Add Examination
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-toolbar">
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" class="form-control" id="examSearchInput" placeholder="Search exam name, code, or academic year...">
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-custom">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Exam Code</th>
+                    <th>Examination Name</th>
+                    <th>Academic Year</th>
+                    <th>Semester</th>
+                    <th>Date Range</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="examsTableBody">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- VIEW 6: MARKS & GRADING MANAGEMENT                            -->
+      <!-- ============================================================= -->
+      <section id="view-marks" class="view-section d-none">
+        
+        <!-- Marks Entry Form Card -->
+        <div class="card" id="marksEntryCard">
+          <div class="card-header">
+            <h5><i class="bi bi-pencil-square me-2 text-primary"></i>Enter / Update Student Marks</h5>
+            <span class="badge bg-light text-primary border">Automated Grading Engine</span>
+          </div>
+          <div class="card-body">
+            <form id="marksEntryForm">
+              <input type="hidden" id="markRecordId">
+
+              <div class="row g-3">
+                <!-- Examination -->
+                <div class="col-md-4">
+                  <label class="form-label fw-bold small text-muted">Examination Session <span class="text-danger">*</span></label>
+                  <select class="form-select" id="marksExamSelect" required>
+                    <option value="">-- Choose Examination --</option>
+                  </select>
+                </div>
+
+                <!-- Subject -->
+                <div class="col-md-4">
+                  <label class="form-label fw-bold small text-muted">Subject <span class="text-danger">*</span></label>
+                  <select class="form-select" id="marksSubjectSelect" required>
+                    <option value="">-- Choose Subject --</option>
+                  </select>
+                </div>
+
+                <!-- Student -->
+                <div class="col-md-4">
+                  <label class="form-label fw-bold small text-muted">Student <span class="text-danger">*</span></label>
+                  <select class="form-select" id="marksStudentSelect" required>
+                    <option value="">-- Choose Student --</option>
+                  </select>
+                </div>
+
+                <!-- Marks Obtained -->
+                <div class="col-md-4">
+                  <label class="form-label fw-bold small text-muted">
+                    Marks Obtained <span class="text-danger">*</span>
+                    <small class="text-muted fw-normal">(Max: <span id="marksMaxDisplay">--</span>, Pass: <span id="marksPassDisplay">--</span>)</small>
+                  </label>
+                  <input type="number" step="0.5" min="0" class="form-control fs-5 fw-bold" id="marksObtainedInput" placeholder="e.g. 85.5" required>
+                  <div class="text-danger small mt-1 d-none" id="marksCalcError"></div>
+                </div>
+
+                <!-- Remarks -->
+                <div class="col-md-8">
+                  <label class="form-label fw-bold small text-muted">Faculty Remarks / Notes</label>
+                  <input type="text" class="form-control" id="marksRemarksInput" placeholder="Optional comments, viva remarks, or feedback...">
+                </div>
+              </div>
+
+              <!-- Live Grade & Pass/Fail Preview Box -->
+              <div class="marks-calculator-card">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <span class="small fw-bold text-muted text-uppercase">Live Grade & Status Calculation Preview</span>
+                  <small class="text-muted">Calculated instantly according to academic rules</small>
+                </div>
+                <div class="calc-display">
+                  <div class="calc-metric">
+                    <small>Calculated Percentage</small>
+                    <span id="calcPercentageDisplay">--</span>
+                  </div>
+                  <div class="calc-metric">
+                    <small>Letter Grade</small>
+                    <div><span id="calcGradeDisplay" class="badge bg-light text-secondary border">--</span></div>
+                  </div>
+                  <div class="calc-metric">
+                    <small>Pass / Fail Status</small>
+                    <div><span id="calcStatusDisplay" class="badge bg-light text-secondary border">--</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="resetMarksFormBtn">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Form
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm px-4" id="marksEntrySubmitBtn">
+                  <i class="bi bi-check-circle me-1"></i> Save Marks & Grade
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Recorded Marks Table -->
+        <div class="card mt-4">
+          <div class="card-header">
+            <h5><i class="bi bi-table me-2 text-primary"></i>Recorded Marks & Evaluated Grades</h5>
+            <div class="d-flex gap-2">
+              <select class="form-select form-select-sm" id="filterMarksExam" style="width: auto;">
+                <option value="">All Examinations</option>
+              </select>
+              <select class="form-select form-select-sm" id="filterMarksSubject" style="width: auto;">
+                <option value="">All Subjects</option>
+              </select>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-custom">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Student Details</th>
+                    <th>Subject</th>
+                    <th>Examination</th>
+                    <th>Marks / Max</th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="marksTableBody">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- VIEW 7: RESULTS & PRINTABLE MARK SHEET                        -->
+      <!-- ============================================================= -->
+      <section id="view-results" class="view-section d-none">
+        
+        <!-- Search Card (Hidden when printing) -->
+        <div class="card no-print">
+          <div class="card-header">
+            <h5><i class="bi bi-search me-2 text-primary"></i>Student Result Lookup</h5>
+            <small class="text-muted">Enter student roll number to generate official college mark sheet</small>
+          </div>
+          <div class="card-body">
+            <form id="resultSearchForm" class="row g-3 align-items-end">
+              <div class="col-md-4">
+                <label class="form-label fw-bold small text-muted">Examination Session</label>
+                <select class="form-select" id="resultsExamSelect">
+                  <option value="">Latest / All Examinations</option>
+                </select>
+              </div>
+              <div class="col-md-5">
+                <label class="form-label fw-bold small text-muted">Student Roll Number <span class="text-danger">*</span></label>
+                <input type="text" class="form-control fw-bold text-uppercase" id="resultRollInput" placeholder="e.g. CS2024001" required>
+              </div>
+              <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="bi bi-search me-1"></i> Retrieve Mark Sheet
+                </button>
+              </div>
+            </form>
+
+            <!-- Quick Demo Student Roll Tags -->
+            <div class="mt-3 pt-2 border-top">
+              <span class="small text-muted me-2 fw-semibold">Quick Sample Candidates:</span>
+              <button class="btn btn-sm btn-outline-primary py-0 px-2 quick-roll-btn" data-roll="CS2024001">
+                CS2024001 (Alex Turner &bull; A+ Top Rank)
+              </button>
+              <button class="btn btn-sm btn-outline-primary py-0 px-2 quick-roll-btn" data-roll="CS2024002">
+                CS2024002 (Emily Watson &bull; Grade A)
+              </button>
+              <button class="btn btn-sm btn-outline-danger py-0 px-2 quick-roll-btn" data-roll="EC2024008">
+                EC2024008 (Isabella Martinez &bull; Failed Sub 2)
+              </button>
+              <button class="btn btn-sm btn-outline-primary py-0 px-2 quick-roll-btn" data-roll="CS2024010">
+                CS2024010 (Ava Patel &bull; Grade A+)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Container -->
+        <div id="resultNotFoundContainer" class="alert alert-warning d-none text-center py-4 my-4">
+          <i class="bi bi-exclamation-triangle-fill fs-3 text-warning d-block mb-2"></i>
+          <h6 class="fw-bold mb-1">Result Not Found</h6>
+          <p id="resultNotFoundMessage" class="mb-0 text-muted small"></p>
+        </div>
+
+        <!-- =========================================================== -->
+        <!-- OFFICIAL COLLEGE MARK SHEET / ACADEMIC TRANSCRIPT            -->
+        <!-- =========================================================== -->
+        <div id="markSheetContainer" class="d-none">
+          
+          <!-- Print Toolbar (Hidden on print) -->
+          <div class="d-flex justify-content-end mb-3 no-print">
+            <button class="btn btn-success" id="printMarkSheetBtn">
+              <i class="bi bi-printer-fill me-1"></i> Print Mark Sheet (PDF)
+            </button>
+          </div>
+
+          <div class="mark-sheet-container" id="printableTranscript">
+            <!-- Watermark -->
+            <div class="mark-sheet-watermark" id="msWatermark">PASSED</div>
+
+            <!-- College Header -->
+            <div class="mark-sheet-header">
+              <div class="mark-sheet-emblem">
+                <i class="bi bi-mortarboard-fill"></i>
+              </div>
+              <h2 class="mark-sheet-college-name" id="msCollegeName">METROPOLITAN INSTITUTE OF TECHNOLOGY & SCIENCE</h2>
+              <div class="mark-sheet-accreditation">
+                Autonomous Institution &bull; Accredited by NAAC with &lsquo;A+&rsquo; Grade &bull; Affiliated to State Technological University
+              </div>
+              <div class="mark-sheet-title-badge">
+                OFFICIAL STATEMENT OF MARKS & GRADES
+              </div>
+            </div>
+
+            <!-- Student & Exam Details Grid -->
+            <div class="mark-sheet-details-grid">
+              <div class="mark-sheet-detail-row">
+                <span class="mark-sheet-detail-label">Student Name:</span>
+                <span class="mark-sheet-detail-value" id="msStudentName">Alex Turner</span>
+              </div>
+              <div class="mark-sheet-detail-row">
+                <span class="mark-sheet-detail-label">Roll Number:</span>
+                <span class="mark-sheet-detail-value" id="msRollNumber">CS2024001</span>
+              </div>
+              <div class="mark-sheet-detail-row">
+                <span class="mark-sheet-detail-label">Department:</span>
+                <span class="mark-sheet-detail-value" id="msDepartment">Computer Science</span>
+              </div>
+              <div class="mark-sheet-detail-row">
+                <span class="mark-sheet-detail-label">Academic Year:</span>
+                <span class="mark-sheet-detail-value" id="msAcademicYear">Year 3</span>
+              </div>
+              <div class="mark-sheet-detail-row">
+                <span class="mark-sheet-detail-label">Semester:</span>
+                <span class="mark-sheet-detail-value" id="msSemester">Semester 5</span>
+              </div>
+              <div class="mark-sheet-detail-row">
+                <span class="mark-sheet-detail-label">Date of Birth:</span>
+                <span class="mark-sheet-detail-value" id="msDob">2003-05-14</span>
+              </div>
+              <div class="mark-sheet-detail-row">
+                <span class="mark-sheet-detail-label">Examination:</span>
+                <span class="mark-sheet-detail-value" id="msExamName">Fall 2024 Semester 5 Final Examination</span>
+              </div>
+              <div class="mark-sheet-detail-row">
+                <span class="mark-sheet-detail-label">Exam Code:</span>
+                <span class="mark-sheet-detail-value" id="msExamCode">EXAM-2024-SEM5</span>
+              </div>
+            </div>
+
+            <!-- Subject-wise Marks Table -->
+            <table class="mark-sheet-table">
+              <thead>
+                <tr>
+                  <th style="width: 45px;">S.No</th>
+                  <th style="width: 100px;">Course Code</th>
+                  <th class="text-start">Course Title</th>
+                  <th style="width: 85px;">Max Marks</th>
+                  <th style="width: 85px;">Pass Marks</th>
+                  <th style="width: 100px;">Obtained</th>
+                  <th style="width: 75px;">Grade</th>
+                  <th style="width: 85px;">Result</th>
+                </tr>
+              </thead>
+              <tbody id="msSubjectsTableBody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+
+            <!-- Summary Bar -->
+            <div class="mark-sheet-summary-box">
+              <div class="mark-sheet-summary-item">
+                <small>Total Marks</small>
+                <strong id="msTotalMarks">473 / 500</strong>
+              </div>
+              <div class="mark-sheet-summary-item">
+                <small>Percentage</small>
+                <strong id="msPercentage">94.6%</strong>
+              </div>
+              <div class="mark-sheet-summary-item">
+                <small>Final Grade</small>
+                <div><span id="msOverallGrade" class="badge badge-grade badge-grade-aplus fs-6">A+</span></div>
+              </div>
+              <div class="mark-sheet-summary-item">
+                <small>Final Result</small>
+                <div><span id="msOverallStatus" class="badge badge-status badge-pass fs-6">PASS</span></div>
+              </div>
+            </div>
+
+            <!-- Grading System Legend -->
+            <div class="mb-4 p-2 bg-light border rounded small">
+              <div class="fw-bold text-muted mb-1" style="font-size: 0.725rem;">GRADING SCALE REFERENCE:</div>
+              <div class="d-flex justify-content-between flex-wrap text-muted" style="font-size: 0.7rem;">
+                <span><strong>90&ndash;100:</strong> A+ (Outstanding)</span>
+                <span><strong>80&ndash;89:</strong> A (Excellent)</span>
+                <span><strong>70&ndash;79:</strong> B (Very Good)</span>
+                <span><strong>60&ndash;69:</strong> C (Good)</span>
+                <span><strong>50&ndash;59:</strong> D (Satisfactory)</span>
+                <span><strong>40&ndash;49:</strong> E (Pass)</span>
+                <span><strong>&lt; 40:</strong> F (Fail)</span>
+              </div>
+            </div>
+
+            <!-- Official Signatures & Verification -->
+            <div class="mark-sheet-footer">
+              <div class="mark-sheet-signature-box text-start">
+                <div class="small text-muted mb-1">Issue Date: <span id="msIssueDate" class="fw-bold text-dark"></span></div>
+                <div class="small text-muted">Official QR / Barcode:</div>
+                <div class="border p-1 text-center bg-light text-muted fw-mono small mt-1" style="letter-spacing: 2px;">
+                  *VERIFIED-COLLEGE-PORTAL*
+                </div>
+              </div>
+
+              <div class="mark-sheet-signature-box">
+                <div class="mark-sheet-signature-line"></div>
+                <small>Dean of Academics</small>
+              </div>
+
+              <div class="mark-sheet-signature-box">
+                <div class="mark-sheet-signature-line"></div>
+                <small>Controller of Examinations</small>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MODAL: LOGIN SYSTEM                                                 -->
+<!-- =================================================================== -->
+<div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header border-0 pb-0 justify-content-center">
+        <div class="text-center pt-3">
+          <div class="sidebar-brand-icon mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.5rem;">
+            <i class="bi bi-mortarboard-fill"></i>
+          </div>
+          <h4 class="fw-bold mb-1">College Portal Login</h4>
+          <p class="text-muted small">Sign in to Student Grade Management System</p>
+        </div>
+      </div>
+      <div class="modal-body px-4 pb-4">
+        
+        <div class="alert alert-danger d-none py-2 small" id="loginError"></div>
+
+        <form id="loginForm">
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-muted">Username</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+              <input type="text" class="form-control" id="loginUsername" placeholder="e.g. admin or prof.smith" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-muted">Password</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+              <input type="password" class="form-control" id="loginPassword" placeholder="Enter password" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+          </button>
+        </form>
+
+        <!-- Demo Accounts Quick Fill -->
+        <div class="mt-4 pt-3 border-top text-center">
+          <p class="small text-muted mb-2 fw-semibold">Quick Demo Login (One-Click):</p>
+          <div class="d-grid gap-2">
+            <button class="btn btn-sm btn-outline-primary" id="fillAdminLogin">
+              <i class="bi bi-shield-lock me-1"></i> Admin Account (admin / admin123)
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" id="fillTeacherLogin">
+              <i class="bi bi-person-video3 me-1"></i> Teacher Account (prof.smith / teacher123)
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MODAL: ADD / EDIT STUDENT                                           -->
+<!-- =================================================================== -->
+<div class="modal fade" id="studentModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="studentModalTitle">Add New Student</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="studentForm">
+        <input type="hidden" id="studentId">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Roll Number <span class="text-danger">*</span></label>
+              <input type="text" class="form-control text-uppercase" id="studentRoll" placeholder="e.g. CS2024011" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="studentName" placeholder="e.g. John Doe" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Email Address <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="studentEmail" placeholder="john.doe@student.college.edu" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Phone Number <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="studentPhone" placeholder="+1-555-1234" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-muted">Department <span class="text-danger">*</span></label>
+              <select class="form-select" id="studentDept" required>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Electronics Engineering">Electronics Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-muted">Academic Year <span class="text-danger">*</span></label>
+              <select class="form-select" id="studentYear" required>
+                <option value="Year 1">Year 1</option>
+                <option value="Year 2">Year 2</option>
+                <option value="Year 3" selected>Year 3</option>
+                <option value="Year 4">Year 4</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-muted">Semester <span class="text-danger">*</span></label>
+              <select class="form-select" id="studentSemester" required>
+                <option value="Semester 1">Semester 1</option>
+                <option value="Semester 2">Semester 2</option>
+                <option value="Semester 3">Semester 3</option>
+                <option value="Semester 4">Semester 4</option>
+                <option value="Semester 5" selected>Semester 5</option>
+                <option value="Semester 6">Semester 6</option>
+                <option value="Semester 7">Semester 7</option>
+                <option value="Semester 8">Semester 8</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Date of Birth <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="studentDob" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MODAL: STUDENT PROFILE VIEW                                         -->
+<!-- =================================================================== -->
+<div class="modal fade" id="studentProfileModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Student Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <div class="user-avatar mx-auto mb-2" style="width: 64px; height: 64px; font-size: 1.5rem;">
+            <i class="bi bi-person"></i>
+          </div>
+          <h5 class="fw-bold mb-0" id="profileName">--</h5>
+          <span class="badge bg-light text-primary border" id="profileRoll">--</span>
+        </div>
+
+        <ul class="list-group list-group-flush small">
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Email:</span>
+            <span class="fw-semibold" id="profileEmail">--</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Phone:</span>
+            <span class="fw-semibold" id="profilePhone">--</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Department:</span>
+            <span class="fw-semibold" id="profileDept">--</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Year / Semester:</span>
+            <span class="fw-semibold"><span id="profileYear">--</span>, <span id="profileSemester">--</span></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Date of Birth:</span>
+            <span class="fw-semibold" id="profileDob">--</span>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary btn-sm" id="profileViewResultBtn">
+          <i class="bi bi-file-earmark-text me-1"></i> View Academic Mark Sheet
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MODAL: ADD / EDIT TEACHER                                           -->
+<!-- =================================================================== -->
+<div class="modal fade" id="teacherModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teacherModalTitle">Add Faculty Member</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="teacherForm">
+        <input type="hidden" id="teacherId">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Employee ID <span class="text-danger">*</span></label>
+              <input type="text" class="form-control text-uppercase" id="teacherEmpId" placeholder="e.g. EMP-CS-104" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="teacherName" placeholder="e.g. Prof. Alan Turing" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Email Address <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="teacherEmail" placeholder="alan.turing@college.edu" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Phone Number</label>
+              <input type="text" class="form-control" id="teacherPhone" placeholder="+1-555-0104">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Department <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="teacherDept" placeholder="e.g. Computer Science" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Designation <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="teacherDesignation" placeholder="e.g. Associate Professor" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Faculty</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MODAL: ADD / EDIT SUBJECT                                           -->
+<!-- =================================================================== -->
+<div class="modal fade" id="subjectModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="subjectModalTitle">Add New Subject</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="subjectForm">
+        <input type="hidden" id="subjectId">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Subject Code <span class="text-danger">*</span></label>
+              <input type="text" class="form-control text-uppercase" id="subjectCode" placeholder="e.g. CS506" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Subject Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="subjectName" placeholder="e.g. Cloud Computing" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Department <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="subjectDept" placeholder="e.g. Computer Science" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Semester <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="subjectSemester" placeholder="e.g. Semester 5" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Maximum Marks <span class="text-danger">*</span></label>
+              <input type="number" step="1" min="1" class="form-control" id="subjectMaxMarks" value="100" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Passing Marks <span class="text-danger">*</span></label>
+              <input type="number" step="1" min="0" class="form-control" id="subjectPassMarks" value="40" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Subject</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- MODAL: ADD / EDIT EXAMINATION                                       -->
+<!-- =================================================================== -->
+<div class="modal fade" id="examModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="examModalTitle">Add Examination Session</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="examForm">
+        <input type="hidden" id="examId">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Exam Code <span class="text-danger">*</span></label>
+              <input type="text" class="form-control text-uppercase" id="examCode" placeholder="e.g. EXAM-2025-SEM6" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Exam Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="examName" placeholder="e.g. Spring 2025 Semester 6 Final Exam" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Academic Year <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="examAcademicYear" placeholder="e.g. 2024-2025" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Semester <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="examSemester" placeholder="e.g. Semester 6" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">Start Date</label>
+              <input type="date" class="form-control" id="examStartDate">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">End Date</label>
+              <input type="date" class="form-control" id="examEndDate">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Examination</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================== -->
+<!-- TOAST NOTIFICATION CONTAINER                                        -->
+<!-- =================================================================== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Application Scripts -->
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/dashboard.js"></script>
+<script src="/js/students.js"></script>
+<script src="/js/teachers.js"></script>
+<script src="/js/subjects.js"></script>
+<script src="/js/examinations.js"></script>
+<script src="/js/marks.js"></script>
+<script src="/js/results.js"></script>
+<script src="/js/app.js"></script>
+
+</body>
+</html>
