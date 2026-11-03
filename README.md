@@ -1,3 +1,10 @@
+##PROJECT CONTRIBUTORS
+@ramkathir348-web
+@TechKavx
+@kavintechy
+@Kavin-Tamilarasi
+@karthikn2007
+
 # Student Grade Management System
 
 **A Full-Stack College Academic Examination & Grade Evaluation Web Application**  
